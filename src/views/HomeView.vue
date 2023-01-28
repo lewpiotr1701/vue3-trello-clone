@@ -1,9 +1,20 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+<template>
+  <div class="home">
+    <h1>This is a hompage</h1>
+  </div>
+</template>
+
+<script>
+
 </script>
 
-<template>
-  <main>
-    <TheWelcome />
-  </main>
-</template>
+<style>
+@media (min-width: 1024px) {
+  .home {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
