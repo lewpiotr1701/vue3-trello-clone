@@ -1,9 +1,12 @@
 import { createStore } from 'vuex'
 import defaultBoard from '@/services/default-board.js'
+import { saveStatePlugin } from '@/services/helpers.js'
+
+const board = JSON.parse(localStorage.getItem('board')) || defaultBoard
 
 export default createStore({
   state: {
-    board: defaultBoard
+    board
   },
   getters: {
 
@@ -16,5 +19,6 @@ export default createStore({
   },
   modules: {
 
-  }
+  },
+  plugins: [saveStatePlugin]
 })
