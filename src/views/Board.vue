@@ -2,10 +2,12 @@
   <div class="board">
     <div class="flex flex-row items-start">
       <div class="column" v-for="(column, columnKey) in board.columns" :key="columnKey">
+
         <div class="flex items-center mb-2 font-bold">
           {{ column.name }}
         </div>
         <div class="list-reset">
+
           <div class="task" v-for="(task, taskKey) in column.tasks" :key="taskKey" @click="goToTask(task)">
             <span class="w-full flex-no-shrink font-bold">
               {{ task.name }}
@@ -14,13 +16,20 @@
               {{ task.description }}
             </p>
           </div>
+
+          <input type="text" class="block p-2 w-full bg-transparent" placeholder="+ Enter new task"
+            @keyup.enter="createTask($event, column.tasks)">
         </div>
+
       </div>
     </div>
 
     <div v-if="isTaskOpen" class="task-bg" @click.self="closeModal">
       <router-view></router-view>
     </div>
+
+    {{ dupa }}
+
   </div>
 </template>
 
@@ -32,6 +41,9 @@ export default {
     ...mapState(['board']),
     isTaskOpen() {
       return this.$route.name === 'task'
+    },
+    dupa() {
+      return JSON.parse(localStorage.getItem('board'))
     }
   },
   methods: {
@@ -40,6 +52,13 @@ export default {
     },
     closeModal() {
       this.$router.push({ name: 'board' })
+    },
+    createTask(event, tasks) {
+      this.$store.commit('CREATE_TASK', {
+        tasks,
+        name: event.target.value
+      })
+      event.target.value = ''
     }
   }
 }
