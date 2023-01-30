@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import AppButton from '@/components/AppButton.vue'
+
 import './assets/main.css'
 
 /* import the fontawesome core */
@@ -19,6 +21,7 @@ const app = createApp(App)
 app
   .use(router)
   .use(store)
+  .component('AppButton', AppButton)
   .component('font-awesome-icon', FontAwesomeIcon)
 
 app.mount('#app')
