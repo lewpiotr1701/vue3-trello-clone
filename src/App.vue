@@ -1,13 +1,7 @@
 <template>
-  <nav>
-    <RouterLink to="/">Home</RouterLink> |
-    <RouterLink to="/about">About</RouterLink>
-  </nav>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-  <font-awesome-icon icon="fa-solid fa-fan" />
-  <RouterView />
+  <div class="app">
+    <RouterView />
+  </div>
 </template>
 
 <script>
@@ -15,7 +9,17 @@
 </script>
 
 <style scoped>
-nav {
+body,
+html {
+  height: 100%;
+}
+
+.app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  color: #2c3e50;
+  height: 100%;
 }
 </style>
