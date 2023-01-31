@@ -11,7 +11,8 @@
         <div class="list-reset">
 
           <div class="task" v-for="(task, $taskIndex) in column.tasks" :key="$taskIndex" draggable="true"
-            @dragstart="pickUpTask($event, $taskIndex, $columnIndex)" @click="goToTask(task)">
+            @dragover.prevent @dragenter.prevent @dragstart="pickUpTask($event, $taskIndex, $columnIndex)"
+            @drop.stop="moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)" @click="goToTask(task)">
             <span class="w-full flex-no-shrink font-bold">
               {{ task.name }}
             </span>
@@ -64,11 +65,10 @@ export default {
       event.target.value = ''
     },
     pickUpTask(event, taskIndex, fromColumnIndex) {
-      console.log('dragstart')
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.dropEffect = 'move'
 
-      event.dataTransfer.setData('task-index', taskIndex)
+      event.dataTransfer.setData('from-task-index', taskIndex)
       event.dataTransfer.setData('from-column-index', fromColumnIndex)
       event.dataTransfer.setData('type', 'task')
     },
@@ -79,34 +79,34 @@ export default {
       event.dataTransfer.setData('from-column-index', fromColumnIndex)
       event.dataTransfer.setData('type', 'column')
     },
-    moveTaskOrColumn(event, toColumnTasks, toColumnIndex) {
+    moveTaskOrColumn(event, toColumnTasks, toColumnIndex, toTaskIndex) {
       const type = event.dataTransfer.getData('type')
 
       if (type === 'task') {
-        this.moveTask(event, toColumnTasks)
+        this.moveTask(event, toColumnTasks, toTaskIndex !== undefined ? toTaskIndex : toColumnTasks.length)
       } else {
         this.moveColumn(event, toColumnIndex)
       }
     },
-    moveTask(event, toColumnTasks) {
-      console.log('drop')
+    moveTask(event, toColumnTasks, toTaskIndex) {
       const fromColumnIndex = event.dataTransfer.getData('from-column-index')
-      const taskIndex = event.dataTransfer.getData('task-index')
+      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
 
       const fromColumnTasks = this.board.columns[fromColumnIndex].tasks
 
       this.$store.commit('MOVE_TASK', {
-        fromColumnTasks: fromColumnTasks,
-        toColumnTasks: toColumnTasks,
-        taskIndex: taskIndex
+        fromColumnTasks,
+        fromTaskIndex,
+        toColumnTasks,
+        toTaskIndex
       })
     },
     moveColumn(event, toColumnIndex) {
       const fromColumnIndex = event.dataTransfer.getData('from-column-index')
 
       this.$store.commit('MOVE_COLUMN', {
-        fromColumnIndex: fromColumnIndex,
-        toColumnIndex: toColumnIndex
+        fromColumnIndex,
+        toColumnIndex
       })
     }
   }
