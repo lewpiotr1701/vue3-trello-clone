@@ -10,21 +10,15 @@
     <p v-if="task.description" class="w-full flex-no-shrink mt-1 text-sm">
       {{ task.description }}
     </p>
-
   </div>
 </template>
 
 <script>
+import movingTasksAndColumnsMixin from '@/mixins/movingTasksAndColumnsMixin.js'
+
 export default {
+  mixins: [movingTasksAndColumnsMixin],
   props: {
-    board: {
-      type: Object,
-      required: true
-    },
-    column: {
-      type: Object,
-      required: true
-    },
     task: {
       type: Object,
       requred: true
@@ -33,10 +27,6 @@ export default {
       type: Number,
       requred: true
     },
-    columnIndex: {
-      type: Number,
-      requred: true
-    }
   },
   methods: {
     goToTask(task) {
@@ -49,36 +39,6 @@ export default {
       event.dataTransfer.setData('from-task-index', fromTaskIndex)
       event.dataTransfer.setData('from-column-index', fromColumnIndex)
       event.dataTransfer.setData('type', 'task')
-    },
-    moveTaskOrColumn(event, toColumnTasks, toColumnIndex, toTaskIndex) {
-      const type = event.dataTransfer.getData('type')
-
-      if (type === 'task') {
-        this.moveTask(event, toColumnTasks, toTaskIndex !== undefined ? toTaskIndex : toColumnTasks.length)
-      } else {
-        this.moveColumn(event, toColumnIndex)
-      }
-    },
-    moveTask(event, toColumnTasks, toTaskIndex) {
-      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
-      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
-
-      const fromColumnTasks = this.board.columns[fromColumnIndex].tasks
-
-      this.$store.commit('MOVE_TASK', {
-        fromColumnTasks,
-        fromTaskIndex,
-        toColumnTasks,
-        toTaskIndex
-      })
-    },
-    moveColumn(event, toColumnIndex) {
-      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
-
-      this.$store.commit('MOVE_COLUMN', {
-        fromColumnIndex,
-        toColumnIndex
-      })
     },
   }
 }
