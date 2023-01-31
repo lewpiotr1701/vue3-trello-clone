@@ -2,9 +2,11 @@
   "name": "trello-clone",
   "version": "0.0.0",
   "private": true,
+  "homepage": "https://github.com/lewpiotr1701/vue3-trello-clone",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "autoprefixer": "^10.4.13",
+    "gh-pages": "^5.0.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4",
     "vite": "^4.0.0"
