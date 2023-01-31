@@ -23,12 +23,17 @@ export default createStore({
     }
   },
   mutations: {
+    // We passed a fragment of state here (tasks)
+    // that's why we don't have to using board.columns....
     CREATE_TASK(state, { tasks, name }) {
       tasks.push({
         name,
         id: uuidv4(),
         description: ''
       })
+    },
+    UPDATE_TASK(state, { task, key, value }) {
+      task[key] = value
     }
   },
   actions: {
