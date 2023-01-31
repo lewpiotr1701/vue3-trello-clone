@@ -26,13 +26,16 @@
         </div>
 
       </div>
+
+      <div class="column flex">
+        <input type="text" v-model="newColumName" placeholder="+ New Column Name" class="p-2 mr-2 flex-grow"
+          @keyup.enter="createColumn">
+      </div>
     </div>
 
     <div v-if="isTaskOpen" class="task-bg" @click.self="closeModal">
       <router-view></router-view>
     </div>
-
-    {{ dupa }}
 
   </div>
 </template>
@@ -41,13 +44,15 @@
 import { mapState } from 'vuex'
 
 export default {
+  data() {
+    return {
+      newColumName: ''
+    }
+  },
   computed: {
     ...mapState(['board']),
     isTaskOpen() {
       return this.$route.name === 'task'
-    },
-    dupa() {
-      return JSON.parse(localStorage.getItem('board'))
     }
   },
   methods: {
@@ -63,6 +68,13 @@ export default {
         name: event.target.value
       })
       event.target.value = ''
+    },
+    createColumn() {
+      this.$store.commit('CREATE_COLUMN', {
+        name: this.newColumName
+      })
+
+      this.newColumName = ''
     },
     pickUpTask(event, taskIndex, fromColumnIndex) {
       event.dataTransfer.effectAllowed = 'move'
