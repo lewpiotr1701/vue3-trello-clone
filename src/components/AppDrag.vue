@@ -1,8 +1,7 @@
 <template>
   <div draggable="true" @dragstart.self="onDrag" @dragover.prevent @dragenter.prevent>
-
+    <slot />
   </div>
-  <slot />
 </template>
 
 <script>
@@ -15,6 +14,8 @@ export default {
   },
   methods: {
     onDrag(event) {
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.setData('payload', JSON.stringify(this.transferData))
     }
   }
